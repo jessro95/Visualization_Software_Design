@@ -28,9 +28,7 @@ var BubbleChart = function() {
 						.append('svg')
 						.attr('height', size)
 						.attr('width', size)
-						.attr('class', 'bubble')
-						.append('g')
-						.attr('transform', 'translate(2,2)');
+						.attr('class', 'bubble');
 
 			var newData = bubble.nodes(dataToNode(data))
 								.filter(function(d) {return !d.children;});
@@ -40,7 +38,7 @@ var BubbleChart = function() {
 							.data(newData);
 
 			//Draw all the circles newly with new data
-			circle.enter().append('circle')
+			circle.enter().append('g').append('circle')
 				.attr('transform', function(d) {return 'translate (' + d.x + ',' + d.y+ ')'; })
 				.attr('r', function(d) {return d.r;})
 				.attr('fill', function(d){ return color(newData, d.val)});
@@ -48,10 +46,10 @@ var BubbleChart = function() {
 			circle.append('text')
 					.attr('x', function(d){return d.x;})
 					.attr('y', function(d) {return d.y})
-					.attr('text-anchor', 'middle')
 					.text(function(d){return d.varName})
+					.style("text-anchor", "middle")
 					.style('fill' , 'white')
-					.style('font-size', 12);
+					.style('font-size', function(d){return (d.r)/5});
 
 
 			 
