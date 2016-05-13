@@ -10,7 +10,6 @@ $(function() {
       {'Country Name' : 'South Korea', '2015' : '8'}
 
     ];
-    console.log(data);
     // Create an instance of your ParagraphChart, setting the color to blue
     var myChart = BubbleChart().variableName('Country Name').valueName('2015');
 

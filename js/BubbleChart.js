@@ -2,13 +2,21 @@
 var BubbleChart = function() {
 	//variables within function scope for tracking maximum bubble size, name, value, colorscale
 	var variableName, valueName;
-	var colorScale = ['#2D96E1', '#597FAD','#856979', '#B15345', '#DE3D12']
+	var colorScale = ['#DE3D12', '#B15345','#856979','#597FAD', '#2D96E1']
 	var size = 800;//default at 800
 	//chart function being returned 
 	var chart = function(selection) {
 		selection.each(function(data) {
 
-
+			var color = function(dataSet, val) {
+				var min = d3.min(dataSet, function(d){ return d.val});
+				var max = d3.max(dataSet, function(d){return d.val});
+				var increment = (max - min) / colorScale.length;
+				for(var i = 0; i < colorScale.length; i++) {
+					if(val >= Number(max) - ((i+1) * increment)) return colorScale[i];
+				}
+				return null;
+			}
 			//select all of the g elements inside 
 			var bubble = d3.layout.pack()
 							.size([size, size])
@@ -35,7 +43,7 @@ var BubbleChart = function() {
 			circle.enter().append('circle')
 				.attr('transform', function(d) {return 'translate (' + d.x + ',' + d.y+ ')'; })
 				.attr('r', function(d) {return d.r;})
-				.attr('fill', '#2D96E1');
+				.attr('fill', function(d){ return color(newData, d.val)});
 
 			circle.append('text')
 					.attr('x', function(d){return d.x;})
@@ -60,6 +68,8 @@ var BubbleChart = function() {
 
 		return {children: nodeSet};
 	}
+
+
 	//Method to update the size for whole bubble
 	chart.size = function(value) {
 		if(!arguments.length) return size; // return the current size if not provided
