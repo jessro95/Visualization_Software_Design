@@ -4,6 +4,7 @@ var BubbleChart = function() {
 	var variableName, valueName;
 	var colorScale = ['#DE3D12', '#B15345','#856979','#597FAD', '#2D96E1']
 	var size = 800;//default at 800
+	var textColor = 'white'; //default at white
 	//chart function being returned 
 	var chart = function(selection) {
 		selection.each(function(data) {
@@ -48,7 +49,7 @@ var BubbleChart = function() {
 					.attr('y', function(d) {return d.y})
 					.text(function(d){return d.varName})
 					.style("text-anchor", "middle")
-					.style('fill' , 'white')
+					.style('fill' , textColor)
 					.style('font-size', function(d){return (d.r)/5});
 
 
@@ -95,6 +96,12 @@ var BubbleChart = function() {
 		return this; //return the new object to allow method chaining
 	};
 
+	//
+	chart.textColor = function(value) {
+		if(!arguments.length) return textColor; // return the current color if not provided
+		textColor = value; //set color to new value
+		return this; //return the new object to allow method chaining
+	}
 
 	//Return the chart object
 	return chart;
